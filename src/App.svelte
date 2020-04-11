@@ -5,6 +5,7 @@ let files
 let inputContent
 let internalContent
 let outputContent
+let visibleInternals = false
 
 function match_all(re, str) {
   const results = []
@@ -221,13 +222,19 @@ function download() {
 
 async function updateContent() {
   parseRTF.string(await files[0].text(), async (err, doc) => {
-    if (err) {
-      outputContent = 'ERROR Reading Document'
-    } else {
+    try {
+      if (err) { throw err }
       inputContent = doc.content.map(({ content }) => content.map(({ value }) => value.trim()).join('\t').trim()).join('\n')
       submit()
+    } catch (e) {
+      console.error(e)
+      outputContent = 'ERROR Reading Document. Is it .rtf?'
     }
   })
+}
+
+function toggleInternal() {
+  visibleInternals = !visibleInternals
 }
 
 </script>
@@ -239,29 +246,35 @@ async function updateContent() {
   }
 </style>
 
-<fieldset>
-  <legend>Input</legend>
+<p>
   <input type="file" bind:files on:change={updateContent}>
-  {#if files && files[0]}
-    <p>{files[0].name}
-  {/if}
-  <textarea bind:value={inputContent}></textarea>
-</fieldset>
+</p>
 
-<center>
-  <button on:click={submit}>Submit</button>
-</center>
+<p>
+  <button on:click={toggleInternal}>Toggle Internals</button>
+</p>
 
-<fieldset>
-  <legend>Internal</legend>
-  <textarea bind:value={internalContent}></textarea>
-</fieldset>
+{#if visibleInternals}
+  <fieldset>
+    <legend>Input</legend>
+    <textarea bind:value={inputContent}></textarea>
+  </fieldset>
+
+  <p>
+    <button on:click={submit}>Submit</button>
+  </p>
+
+  <fieldset>
+    <legend>Internal</legend>
+    <textarea bind:value={internalContent}></textarea>
+  </fieldset>
+{/if}
 
 <fieldset>
   <legend>Output</legend>
   <textarea bind:value={outputContent}></textarea>
 </fieldset>
 
-<center>
+<p>
   <button on:click={download}>Download</button>
-</center>
+</p>

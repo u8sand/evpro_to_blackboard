@@ -1,5 +1,5 @@
-# exam_to_blackboard
-Convert your exam to blackboard format
+# evpro_to_blackboard
+Convert your EvPro-exported exam to blackboard format
 
 ## Development
 
