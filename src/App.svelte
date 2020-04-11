@@ -96,7 +96,6 @@ function decode_matching(matching) {
     const qa = (
       /\t(?<question_label>\d+)\.\tANS:\t(?<answer_label>.+)\n+/gm
     )
-    console.log(question_answers)
 
     const decoded_answers = []
     for (const { label, answer } of match_all(a, answers)) {
@@ -195,6 +194,19 @@ function submit() {
   }
 }
 
+function download() {
+  const element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(outputContent));
+  element.setAttribute('download', 'output.txt');
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
 </script>
 
 <style>
@@ -219,8 +231,12 @@ function submit() {
   <textarea bind:value={internalContent}></textarea>
 </fieldset>
  -->
- 
+
 <fieldset>
   <legend>Output</legend>
   <textarea bind:value={outputContent}></textarea>
 </fieldset>
+
+<center>
+  <button on:click={download}>Download</button>
+</center>
