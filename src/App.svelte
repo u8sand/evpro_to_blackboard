@@ -2,6 +2,7 @@
 import parseRTF from 'rtf-parser'
 
 let files
+let internal = {}
 let inputContent
 let internalContent
 let outputContent
@@ -172,7 +173,7 @@ function decode_document(text) {
 
 function encode_document({ title, sections }) {
   const results = []
-  const internal = { title, sections }
+  internal = { title, sections }
   for (const { section, content } of sections) {
     if (section === 'TRUE/FALSE') {
       const decoded = decode_true_false(content)
@@ -210,7 +211,7 @@ function submit() {
 function download() {
   const element = document.createElement('a');
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(outputContent));
-  element.setAttribute('download', 'output.txt');
+  element.setAttribute('download', internal.title !== undefined ? `${internal.title.replace(/\s+/, '_')}.txt` : 'output.txt');
 
   element.style.display = 'none';
   document.body.appendChild(element);
@@ -272,6 +273,9 @@ function toggleInternal() {
 
 <fieldset>
   <legend>Output</legend>
+  {#if internal.title}
+    <p><b>{internal.title}</b></p>
+  {/if}
   <textarea bind:value={outputContent}></textarea>
 </fieldset>
 
