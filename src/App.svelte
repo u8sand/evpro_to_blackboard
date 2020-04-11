@@ -12,13 +12,6 @@ function match_all(re, str) {
   return results
 }
 
-function decode_document(text) {
-  const document = (
-    /^(?<title>.+)?\n+TRUE\/FALSE\n+(?<true_false>((.+)\n+)+)\n+MULTIPLE CHOICE\n+(?<multiple_choice>((.+)\n+)+)MATCHING\n+(?<matching>((.+)\n+)+)$/gm
-  ).exec(inputContent)
-  return document.groups
-}
-
 function decode_true_false(true_false) {
   const qa = (
     /\t\d+\.\t(?<question>.+)\n+ANS:\t(?<answer>[TF])/gm
@@ -159,37 +152,50 @@ function encode_matching(matching) {
   return results.join('\n\n')
 }
 
+function decode_document(text) {
+  const document = `${text.replace(/\n([A-Z\/ ]+)\n/gm, '\nSECTION: $1\n')}\nEND OF FILE`
+  const section = (
+    /\nSECTION: (?<section>.+)\n(?<content>(.|\n)+?)(?=(\nSECTION:)|END OF FILE)/gm
+  )
+  return {
+    title: document.substring(0, document.indexOf('\n')),
+    sections: match_all(section, document)
+  }
+}
+
+function encode_document({ title, sections }) {
+  const results = []
+  const internal = { title, sections }
+  for (const { section, content } of sections) {
+    if (section === 'TRUE/FALSE') {
+      const decoded = decode_true_false(content)
+      internal[section] = decoded
+      const encoded = encode_true_false(decoded)
+      results.push(encoded)
+    } else if (section === 'MULTIPLE CHOICE') {
+      const decoded = decode_multiple_choice(content)
+      internal[section] = decoded
+      const encoded = encode_multiple_choice(decoded)
+      results.push(encoded)
+    } else if (section === 'MATCHING') {
+      const decoded = decode_matching(content)
+      internal[section] = decoded
+      const encoded = encode_matching(decoded)
+      results.push(encoded)
+    } else {
+      console.warn(`Ignoring section: ${section}`)
+    }
+  }
+  internalContent = JSON.stringify(internal)
+  return results.join('\n\n')
+}
+
 function submit() {
   try {
-    const {
-      title,
-      true_false,
-      multiple_choice,
-      matching,
-    } = decode_document(inputContent)
-    const true_false_decoded = decode_true_false(true_false)
-    const multiple_choice_decoded = decode_multiple_choice(multiple_choice)
-    const matching_decoded = decode_matching(matching)
-
-    const true_false_encoded = encode_true_false(true_false_decoded)
-    const multiple_choice_encoded = encode_multiple_choice(multiple_choice_decoded)
-    const matching_encoded = encode_matching(matching_decoded)
-
-    // internalContent = JSON.stringify({
-    //   title,
-    //   true_false,
-    //   multiple_choice,
-    //   matching,
-    //   true_false_decoded,
-    //   multiple_choice_decoded,
-    //   matching_decoded,
-    //   true_false_encoded,
-    //   multiple_choice_encoded,
-    //   matching_encoded,
-    // })
-
-    outputContent = `${true_false_encoded}\n\n${multiple_choice_encoded}\n\n${matching_encoded}`
+    const decoded_document = decode_document(inputContent)
+    outputContent = encode_document(decoded_document)
   } catch (e) {
+    console.error(e)
     outputContent = `Error while parsing`
   }
 }
@@ -230,7 +236,7 @@ function download() {
   <legend>Internal</legend>
   <textarea bind:value={internalContent}></textarea>
 </fieldset>
- -->
+-->
 
 <fieldset>
   <legend>Output</legend>
