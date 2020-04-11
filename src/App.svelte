@@ -1,4 +1,7 @@
 <script>
+import parseRTF from 'rtf-parser'
+
+let files
 let inputContent
 let internalContent
 let outputContent
@@ -9,12 +12,15 @@ function match_all(re, str) {
   while (m = re.exec(str)) {
     results.push(m.groups)
   }
+  if (results.length === 0) {
+    console.warn(`${re} of ${str} was empty`)
+  }
   return results
 }
 
 function decode_true_false(true_false) {
   const qa = (
-    /\t\d+\.\t(?<question>.+)\n+ANS:\t(?<answer>[TF])/gm
+    /\n\d+\.\s+(?<question>.+)\n+ANS:\s+(?<answer>[TF])/gm
   )
   return match_all(qa, true_false)
 }
@@ -25,9 +31,9 @@ function encode_true_false(true_false) {
     'F': 'False',
   }
   const results = []
-  for (const tf of true_false) {
+  for (const { question, answer } of true_false) {
     results.push(
-      `TF\t${tf.question}\t${answer_lookup[tf.answer]}\tincorrect`
+      `TF\t${question.replace(/\t+/g, ' ')}\t${answer_lookup[answer]}\tincorrect`
     )
   }
   return results.join('\n\n')
@@ -35,12 +41,12 @@ function encode_true_false(true_false) {
 
 function decode_multiple_choice(multiple_choice) {
   const mc = (
-    /\t\d+\.\t(?<question>.+)\n(?<choices>([a-z]\.\n.+\n)+)\n+ANS:\t(?<answer>[A-Z])/gm
+    /\n\d+\.\s+(?<question>.+)\n+(?<choices>([a-z]\.\s+.+?[\t\n])+)\n+ANS:\s+(?<answer>[A-Z])/gm
   )
   const decoded = []
   for (const { question, choices, answer } of match_all(mc, multiple_choice)) {
     const c = (
-      /(?<label>[a-z])\.\n(?<choice>.+)\n/gm
+      /(?<label>[a-z])\.\s+(?<choice>.+?)[\t\n]/gm
     )
 
     const decoded_choices = []
@@ -76,18 +82,18 @@ function encode_multiple_choice(multiple_choice) {
 
 function decode_matching(matching) {
   const m = (
-    /(?<question>.+)?\n(?<answers>a\.\n.+\n([a-z]\.\n.+\n)+)\n+((?<questions>((\t\d+\.\t.+)\n+)+?))((?<question_answers>((\t\d+\.\tANS:\t[A-Z])\n{1,2})+))/gm
+    /(?<question>.+)?\n(?<answers>a\.\s+.+?[\t\n]([a-z]\.\s+.+?[\t\n])+)\n+((?<questions>((\d+\.\s+.+)\n+)+?))((?<question_answers>((\d+\.\s+ANS:\s+[A-Z])\n{1,2})+))/gm
   )
   const decoded = []
   for (const { question, answers, questions, question_answers } of match_all(m, matching)) {
     const a = (
-      /(?<label>[a-z])\.\n(?<answer>.+)\n/gm
+      /(?<label>[a-z])\.\s+(?<answer>.+?)[\t\n]/gm
     )
     const q = (
-      /\t(?<label>\d+)\.\t(?<question>.+)\n/gm
+      /(?<label>\d+)\.\s+(?<question>.+)\n/gm
     )
     const qa = (
-      /\t(?<question_label>\d+)\.\tANS:\t(?<answer_label>.+)\n+/gm
+      /(?<question_label>\d+)\.\s+ANS:\s+(?<answer_label>.+)\n/gm
     )
 
     const decoded_answers = []
@@ -213,6 +219,17 @@ function download() {
   document.body.removeChild(element);
 }
 
+async function updateContent() {
+  parseRTF.string(await files[0].text(), async (err, doc) => {
+    if (err) {
+      outputContent = 'ERROR Reading Document'
+    } else {
+      inputContent = doc.content.map(({ content }) => content.map(({ value }) => value.trim()).join('\t').trim()).join('\n')
+      submit()
+    }
+  })
+}
+
 </script>
 
 <style>
@@ -224,6 +241,10 @@ function download() {
 
 <fieldset>
   <legend>Input</legend>
+  <input type="file" bind:files on:change={updateContent}>
+  {#if files && files[0]}
+    <p>{files[0].name}
+  {/if}
   <textarea bind:value={inputContent}></textarea>
 </fieldset>
 
@@ -231,12 +252,10 @@ function download() {
   <button on:click={submit}>Submit</button>
 </center>
 
-<!-- 
 <fieldset>
   <legend>Internal</legend>
   <textarea bind:value={internalContent}></textarea>
 </fieldset>
--->
 
 <fieldset>
   <legend>Output</legend>
