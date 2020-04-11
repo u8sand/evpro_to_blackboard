@@ -113,7 +113,7 @@ function decode_matching(matching) {
     }
 
     decoded.push({
-      question: (question || '').replace(/\t+/g, ' '),
+      question: (question || 'Unnamed').replace(/\t+/g, ' '),
       answers: decoded_answers,
       questions: decoded_questions,
       question_answers: decoded_question_answers,
@@ -140,7 +140,7 @@ function encode_matching(matching) {
     const question_answer_results = []
     for (const { label: answer_label, answer } of answers) {
       const question_label = answer_question_lookup[answer_label.toUpperCase()]
-      const question = question_label === undefined ? '' : question_lookup[question_label]
+      const question = question_label === undefined ? 'Unassigned' : question_lookup[question_label]
       question_answer_results.push(
         `${question}\t${answer}`
       )
