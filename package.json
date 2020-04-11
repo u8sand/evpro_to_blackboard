@@ -1,0 +1,23 @@
+{
+  "name": "exam_to_blackboard",
+  "version": "1.0.0",
+  "description": "Convert exams to blackboard format",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel serve src/index.html",
+    "build": "parcel build --public-url=./ src/index.html",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "keywords": [
+    "school"
+  ],
+  "author": "Daniel J. B. Clarke <u8sand@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@babel/polyfill": "^7.8.7",
+    "gh-pages": "^2.2.0",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-svelte": "^4.0.6",
+    "svelte": "^3.20.1"
+  }
+}
