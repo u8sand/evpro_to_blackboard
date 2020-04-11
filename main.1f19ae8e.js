@@ -8722,7 +8722,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var document_1 = _internal.globals.document;
+var console_1 = _internal.globals.console,
+    document_1 = _internal.globals.document;
 var file = "App.svelte";
 
 function add_css() {
@@ -8770,18 +8771,18 @@ function create_fragment(ctx) {
       center1 = (0, _internal.element)("center");
       button1 = (0, _internal.element)("button");
       button1.textContent = "Download";
-      (0, _internal.add_location)(legend0, file, 219, 2, 5934);
+      (0, _internal.add_location)(legend0, file, 225, 2, 6157);
       (0, _internal.attr_dev)(textarea0, "class", "svelte-edipxk");
-      (0, _internal.add_location)(textarea0, file, 220, 2, 5959);
-      (0, _internal.add_location)(fieldset0, file, 218, 0, 5921);
-      (0, _internal.add_location)(button0, file, 224, 2, 6031);
-      (0, _internal.add_location)(center0, file, 223, 0, 6020);
-      (0, _internal.add_location)(legend1, file, 235, 2, 6213);
+      (0, _internal.add_location)(textarea0, file, 226, 2, 6182);
+      (0, _internal.add_location)(fieldset0, file, 224, 0, 6144);
+      (0, _internal.add_location)(button0, file, 230, 2, 6254);
+      (0, _internal.add_location)(center0, file, 229, 0, 6243);
+      (0, _internal.add_location)(legend1, file, 241, 2, 6435);
       (0, _internal.attr_dev)(textarea1, "class", "svelte-edipxk");
-      (0, _internal.add_location)(textarea1, file, 236, 2, 6239);
-      (0, _internal.add_location)(fieldset1, file, 234, 0, 6200);
-      (0, _internal.add_location)(button1, file, 240, 2, 6312);
-      (0, _internal.add_location)(center1, file, 239, 0, 6301);
+      (0, _internal.add_location)(textarea1, file, 242, 2, 6461);
+      (0, _internal.add_location)(fieldset1, file, 240, 0, 6422);
+      (0, _internal.add_location)(button1, file, 246, 2, 6534);
+      (0, _internal.add_location)(center1, file, 245, 0, 6523);
     },
     l: function claim(nodes) {
       throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -9107,7 +9108,7 @@ function decode_matching(matching) {
       }
 
       decoded.push({
-        question: (question || "").replace(/\t+/g, " "),
+        question: (question || "Unnamed").replace(/\t+/g, " "),
         answers: decoded_answers,
         questions: decoded_questions,
         question_answers: decoded_question_answers
@@ -9186,7 +9187,7 @@ function encode_matching(matching) {
 
           var _question_label = answer_question_lookup[_answer_label.toUpperCase()];
 
-          var _question3 = _question_label === undefined ? "" : question_lookup[_question_label];
+          var _question3 = _question_label === undefined ? "Unassigned" : question_lookup[_question_label];
 
           question_answer_results.push("".concat(_question3, "\t").concat(answer));
         }
@@ -9207,50 +9208,84 @@ function encode_matching(matching) {
   return results.join("\n\n");
 }
 
+function decode_document(text) {
+  var document = "".concat(text.replace(/\n([A-Z\/ ]+)\n/gm, "\nSECTION: $1\n"), "\nEND OF FILE");
+
+  var section = /*#__PURE__*/_wrapRegExp(/\nSECTION: (.+)\n((.|\n)+?)(?=(\nSECTION:)|END OF FILE)/gm, {
+    section: 1,
+    content: 2
+  });
+
+  return {
+    title: document.substring(0, document.indexOf("\n")),
+    sections: match_all(section, document)
+  };
+}
+
 function instance($$self, $$props, $$invalidate) {
   var inputContent;
   var internalContent;
   var outputContent;
 
-  function decode_document(text) {
-    var document = /*#__PURE__*/_wrapRegExp(/^(.+)?\n+TRUE\/FALSE\n+(((.+)\n+)+)\n+MULTIPLE CHOICE\n+(((.+)\n+)+)MATCHING\n+(((.+)\n+)+)$/gm, {
-      title: 1,
-      true_false: 2,
-      multiple_choice: 5,
-      matching: 8
-    }).exec(inputContent);
+  function encode_document(_ref3) {
+    var title = _ref3.title,
+        sections = _ref3.sections;
+    var results = [];
+    var internal = {
+      title: title,
+      sections: sections
+    };
 
-    return document.groups;
+    var _iterator14 = _createForOfIteratorHelper(sections),
+        _step14;
+
+    try {
+      for (_iterator14.s(); !(_step14 = _iterator14.n()).done;) {
+        var _step14$value = _step14.value,
+            section = _step14$value.section,
+            content = _step14$value.content;
+
+        if (section === "TRUE/FALSE") {
+          var decoded = decode_true_false(content);
+          internal[section] = decoded;
+          var encoded = encode_true_false(decoded);
+          results.push(encoded);
+        } else if (section === "MULTIPLE CHOICE") {
+          var _decoded = decode_multiple_choice(content);
+
+          internal[section] = _decoded;
+
+          var _encoded = encode_multiple_choice(_decoded);
+
+          results.push(_encoded);
+        } else if (section === "MATCHING") {
+          var _decoded2 = decode_matching(content);
+
+          internal[section] = _decoded2;
+
+          var _encoded2 = encode_matching(_decoded2);
+
+          results.push(_encoded2);
+        } else {
+          console.warn("Ignoring section: ".concat(section));
+        }
+      }
+    } catch (err) {
+      _iterator14.e(err);
+    } finally {
+      _iterator14.f();
+    }
+
+    internalContent = JSON.stringify(internal);
+    return results.join("\n\n");
   }
 
   function submit() {
     try {
-      var _decode_document = decode_document(inputContent),
-          title = _decode_document.title,
-          true_false = _decode_document.true_false,
-          multiple_choice = _decode_document.multiple_choice,
-          matching = _decode_document.matching;
-
-      var true_false_decoded = decode_true_false(true_false);
-      var multiple_choice_decoded = decode_multiple_choice(multiple_choice);
-      var matching_decoded = decode_matching(matching);
-      var true_false_encoded = encode_true_false(true_false_decoded);
-      var multiple_choice_encoded = encode_multiple_choice(multiple_choice_decoded);
-      var matching_encoded = encode_matching(matching_decoded); // internalContent = JSON.stringify({
-      //   title,
-      //   true_false,
-      //   multiple_choice,
-      //   matching,
-      //   true_false_decoded,
-      //   multiple_choice_decoded,
-      //   matching_decoded,
-      //   true_false_encoded,
-      //   multiple_choice_encoded,
-      //   matching_encoded,
-      // })
-
-      $$invalidate(1, outputContent = "".concat(true_false_encoded, "\n\n").concat(multiple_choice_encoded, "\n\n").concat(matching_encoded));
+      var decoded_document = decode_document(inputContent);
+      $$invalidate(1, outputContent = encode_document(decoded_document));
     } catch (e) {
+      console.error(e);
       $$invalidate(1, outputContent = "Error while parsing");
     }
   }
@@ -9267,7 +9302,7 @@ function instance($$self, $$props, $$invalidate) {
 
   var writable_props = [];
   Object.keys($$props).forEach(function (key) {
-    if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn("<App> was created with unknown prop '".concat(key, "'"));
+    if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn("<App> was created with unknown prop '".concat(key, "'"));
   });
   var _$$props$$$slots = $$props.$$slots,
       $$slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
@@ -9290,13 +9325,14 @@ function instance($$self, $$props, $$invalidate) {
       internalContent: internalContent,
       outputContent: outputContent,
       match_all: match_all,
-      decode_document: decode_document,
       decode_true_false: decode_true_false,
       encode_true_false: encode_true_false,
       decode_multiple_choice: decode_multiple_choice,
       encode_multiple_choice: encode_multiple_choice,
       decode_matching: decode_matching,
       encode_matching: encode_matching,
+      decode_document: decode_document,
+      encode_document: encode_document,
       submit: submit,
       download: download
     };
@@ -9312,7 +9348,7 @@ function instance($$self, $$props, $$invalidate) {
     $$self.$inject_state($$props.$$inject);
   }
 
-  return [inputContent, outputContent, submit, download, internalContent, decode_document, textarea0_input_handler, textarea1_input_handler];
+  return [inputContent, outputContent, submit, download, internalContent, encode_document, textarea0_input_handler, textarea1_input_handler];
 }
 
 var App = /*#__PURE__*/function (_SvelteComponentDev) {
@@ -9636,7 +9672,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35457" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43321" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
