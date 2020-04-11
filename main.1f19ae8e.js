@@ -19356,31 +19356,142 @@ function add_css() {
   style.id = "svelte-edipxk-style";
   style.textContent = "textarea.svelte-edipxk{width:100%;height:200px}\n";
   (0, _internal.append_dev)(document_1.head, style);
-} // (245:2) {#if files && files[0]}
+} // (258:0) {#if visibleInternals}
+
+
+function create_if_block_1(ctx) {
+  var fieldset0;
+  var legend0;
+  var t1;
+  var textarea0;
+  var t2;
+  var p;
+  var button;
+  var t4;
+  var fieldset1;
+  var legend1;
+  var t6;
+  var textarea1;
+  var dispose;
+  var block = {
+    c: function create() {
+      fieldset0 = (0, _internal.element)("fieldset");
+      legend0 = (0, _internal.element)("legend");
+      legend0.textContent = "Input";
+      t1 = (0, _internal.space)();
+      textarea0 = (0, _internal.element)("textarea");
+      t2 = (0, _internal.space)();
+      p = (0, _internal.element)("p");
+      button = (0, _internal.element)("button");
+      button.textContent = "Submit";
+      t4 = (0, _internal.space)();
+      fieldset1 = (0, _internal.element)("fieldset");
+      legend1 = (0, _internal.element)("legend");
+      legend1.textContent = "Internal";
+      t6 = (0, _internal.space)();
+      textarea1 = (0, _internal.element)("textarea");
+      (0, _internal.add_location)(legend0, file, 259, 4, 7093);
+      (0, _internal.attr_dev)(textarea0, "class", "svelte-edipxk");
+      (0, _internal.add_location)(textarea0, file, 260, 4, 7120);
+      (0, _internal.add_location)(fieldset0, file, 258, 2, 7078);
+      (0, _internal.add_location)(button, file, 264, 4, 7193);
+      (0, _internal.add_location)(p, file, 263, 2, 7185);
+      (0, _internal.add_location)(legend1, file, 268, 4, 7260);
+      (0, _internal.attr_dev)(textarea1, "class", "svelte-edipxk");
+      (0, _internal.add_location)(textarea1, file, 269, 4, 7290);
+      (0, _internal.add_location)(fieldset1, file, 267, 2, 7245);
+    },
+    m: function mount(target, anchor, remount) {
+      (0, _internal.insert_dev)(target, fieldset0, anchor);
+      (0, _internal.append_dev)(fieldset0, legend0);
+      (0, _internal.append_dev)(fieldset0, t1);
+      (0, _internal.append_dev)(fieldset0, textarea0);
+      (0, _internal.set_input_value)(textarea0,
+      /*inputContent*/
+      ctx[2]);
+      (0, _internal.insert_dev)(target, t2, anchor);
+      (0, _internal.insert_dev)(target, p, anchor);
+      (0, _internal.append_dev)(p, button);
+      (0, _internal.insert_dev)(target, t4, anchor);
+      (0, _internal.insert_dev)(target, fieldset1, anchor);
+      (0, _internal.append_dev)(fieldset1, legend1);
+      (0, _internal.append_dev)(fieldset1, t6);
+      (0, _internal.append_dev)(fieldset1, textarea1);
+      (0, _internal.set_input_value)(textarea1,
+      /*internalContent*/
+      ctx[3]);
+      if (remount) (0, _internal.run_all)(dispose);
+      dispose = [(0, _internal.listen_dev)(textarea0, "input",
+      /*textarea0_input_handler*/
+      ctx[12]), (0, _internal.listen_dev)(button, "click",
+      /*submit*/
+      ctx[6], false, false, false), (0, _internal.listen_dev)(textarea1, "input",
+      /*textarea1_input_handler*/
+      ctx[13])];
+    },
+    p: function update(ctx, dirty) {
+      if (dirty &
+      /*inputContent*/
+      4) {
+        (0, _internal.set_input_value)(textarea0,
+        /*inputContent*/
+        ctx[2]);
+      }
+
+      if (dirty &
+      /*internalContent*/
+      8) {
+        (0, _internal.set_input_value)(textarea1,
+        /*internalContent*/
+        ctx[3]);
+      }
+    },
+    d: function destroy(detaching) {
+      if (detaching) (0, _internal.detach_dev)(fieldset0);
+      if (detaching) (0, _internal.detach_dev)(t2);
+      if (detaching) (0, _internal.detach_dev)(p);
+      if (detaching) (0, _internal.detach_dev)(t4);
+      if (detaching) (0, _internal.detach_dev)(fieldset1);
+      (0, _internal.run_all)(dispose);
+    }
+  };
+  (0, _internal.dispatch_dev)("SvelteRegisterBlock", {
+    block: block,
+    id: create_if_block_1.name,
+    type: "if",
+    source: "(258:0) {#if visibleInternals}",
+    ctx: ctx
+  });
+  return block;
+} // (276:2) {#if internal.title}
 
 
 function create_if_block(ctx) {
   var p;
+  var b;
   var t_value =
-  /*files*/
-  ctx[0][0].name + "";
+  /*internal*/
+  ctx[1].title + "";
   var t;
   var block = {
     c: function create() {
       p = (0, _internal.element)("p");
+      b = (0, _internal.element)("b");
       t = (0, _internal.text)(t_value);
-      (0, _internal.add_location)(p, file, 245, 4, 6784);
+      (0, _internal.add_location)(b, file, 276, 7, 7429);
+      (0, _internal.add_location)(p, file, 276, 4, 7426);
     },
     m: function mount(target, anchor) {
       (0, _internal.insert_dev)(target, p, anchor);
-      (0, _internal.append_dev)(p, t);
+      (0, _internal.append_dev)(p, b);
+      (0, _internal.append_dev)(b, t);
     },
     p: function update(ctx, dirty) {
       if (dirty &
-      /*files*/
-      1 && t_value !== (t_value =
-      /*files*/
-      ctx[0][0].name + "")) (0, _internal.set_data_dev)(t, t_value);
+      /*internal*/
+      2 && t_value !== (t_value =
+      /*internal*/
+      ctx[1].title + "")) (0, _internal.set_data_dev)(t, t_value);
     },
     d: function destroy(detaching) {
       if (detaching) (0, _internal.detach_dev)(p);
@@ -19390,204 +19501,161 @@ function create_if_block(ctx) {
     block: block,
     id: create_if_block.name,
     type: "if",
-    source: "(245:2) {#if files && files[0]}",
+    source: "(276:2) {#if internal.title}",
     ctx: ctx
   });
   return block;
 }
 
 function create_fragment(ctx) {
-  var fieldset0;
-  var legend0;
-  var t1;
+  var p0;
   var input;
+  var t0;
+  var p1;
+  var button0;
   var t2;
   var t3;
-  var textarea0;
-  var t4;
-  var center0;
-  var button0;
+  var fieldset;
+  var legend;
+  var t5;
   var t6;
-  var fieldset1;
-  var legend1;
-  var t8;
-  var textarea1;
-  var t9;
-  var fieldset2;
-  var legend2;
-  var t11;
-  var textarea2;
-  var t12;
-  var center1;
+  var textarea;
+  var t7;
+  var p2;
   var button1;
   var dispose;
-  var if_block =
-  /*files*/
-  ctx[0] &&
-  /*files*/
-  ctx[0][0] && create_if_block(ctx);
+  var if_block0 =
+  /*visibleInternals*/
+  ctx[5] && create_if_block_1(ctx);
+  var if_block1 =
+  /*internal*/
+  ctx[1].title && create_if_block(ctx);
   var block = {
     c: function create() {
-      fieldset0 = (0, _internal.element)("fieldset");
-      legend0 = (0, _internal.element)("legend");
-      legend0.textContent = "Input";
-      t1 = (0, _internal.space)();
+      p0 = (0, _internal.element)("p");
       input = (0, _internal.element)("input");
-      t2 = (0, _internal.space)();
-      if (if_block) if_block.c();
-      t3 = (0, _internal.space)();
-      textarea0 = (0, _internal.element)("textarea");
-      t4 = (0, _internal.space)();
-      center0 = (0, _internal.element)("center");
+      t0 = (0, _internal.space)();
+      p1 = (0, _internal.element)("p");
       button0 = (0, _internal.element)("button");
-      button0.textContent = "Submit";
+      button0.textContent = "Toggle Internals";
+      t2 = (0, _internal.space)();
+      if (if_block0) if_block0.c();
+      t3 = (0, _internal.space)();
+      fieldset = (0, _internal.element)("fieldset");
+      legend = (0, _internal.element)("legend");
+      legend.textContent = "Output";
+      t5 = (0, _internal.space)();
+      if (if_block1) if_block1.c();
       t6 = (0, _internal.space)();
-      fieldset1 = (0, _internal.element)("fieldset");
-      legend1 = (0, _internal.element)("legend");
-      legend1.textContent = "Internal";
-      t8 = (0, _internal.space)();
-      textarea1 = (0, _internal.element)("textarea");
-      t9 = (0, _internal.space)();
-      fieldset2 = (0, _internal.element)("fieldset");
-      legend2 = (0, _internal.element)("legend");
-      legend2.textContent = "Output";
-      t11 = (0, _internal.space)();
-      textarea2 = (0, _internal.element)("textarea");
-      t12 = (0, _internal.space)();
-      center1 = (0, _internal.element)("center");
+      textarea = (0, _internal.element)("textarea");
+      t7 = (0, _internal.space)();
+      p2 = (0, _internal.element)("p");
       button1 = (0, _internal.element)("button");
       button1.textContent = "Download";
-      (0, _internal.add_location)(legend0, file, 242, 2, 6672);
       (0, _internal.attr_dev)(input, "type", "file");
-      (0, _internal.add_location)(input, file, 243, 2, 6697);
-      (0, _internal.attr_dev)(textarea0, "class", "svelte-edipxk");
-      (0, _internal.add_location)(textarea0, file, 247, 2, 6813);
-      (0, _internal.add_location)(fieldset0, file, 241, 0, 6659);
-      (0, _internal.add_location)(button0, file, 251, 2, 6885);
-      (0, _internal.add_location)(center0, file, 250, 0, 6874);
-      (0, _internal.add_location)(legend1, file, 255, 2, 6951);
-      (0, _internal.attr_dev)(textarea1, "class", "svelte-edipxk");
-      (0, _internal.add_location)(textarea1, file, 256, 2, 6979);
-      (0, _internal.add_location)(fieldset1, file, 254, 0, 6938);
-      (0, _internal.add_location)(legend2, file, 260, 2, 7056);
-      (0, _internal.attr_dev)(textarea2, "class", "svelte-edipxk");
-      (0, _internal.add_location)(textarea2, file, 261, 2, 7082);
-      (0, _internal.add_location)(fieldset2, file, 259, 0, 7043);
-      (0, _internal.add_location)(button1, file, 265, 2, 7155);
-      (0, _internal.add_location)(center1, file, 264, 0, 7144);
+      (0, _internal.add_location)(input, file, 250, 2, 6918);
+      (0, _internal.add_location)(p0, file, 249, 0, 6912);
+      (0, _internal.add_location)(button0, file, 254, 2, 6987);
+      (0, _internal.add_location)(p1, file, 253, 0, 6981);
+      (0, _internal.add_location)(legend, file, 274, 2, 7375);
+      (0, _internal.attr_dev)(textarea, "class", "svelte-edipxk");
+      (0, _internal.add_location)(textarea, file, 278, 2, 7467);
+      (0, _internal.add_location)(fieldset, file, 273, 0, 7362);
+      (0, _internal.add_location)(button1, file, 282, 2, 7535);
+      (0, _internal.add_location)(p2, file, 281, 0, 7529);
     },
     l: function claim(nodes) {
       throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     },
     m: function mount(target, anchor, remount) {
-      (0, _internal.insert_dev)(target, fieldset0, anchor);
-      (0, _internal.append_dev)(fieldset0, legend0);
-      (0, _internal.append_dev)(fieldset0, t1);
-      (0, _internal.append_dev)(fieldset0, input);
-      (0, _internal.append_dev)(fieldset0, t2);
-      if (if_block) if_block.m(fieldset0, null);
-      (0, _internal.append_dev)(fieldset0, t3);
-      (0, _internal.append_dev)(fieldset0, textarea0);
-      (0, _internal.set_input_value)(textarea0,
-      /*inputContent*/
-      ctx[1]);
-      (0, _internal.insert_dev)(target, t4, anchor);
-      (0, _internal.insert_dev)(target, center0, anchor);
-      (0, _internal.append_dev)(center0, button0);
-      (0, _internal.insert_dev)(target, t6, anchor);
-      (0, _internal.insert_dev)(target, fieldset1, anchor);
-      (0, _internal.append_dev)(fieldset1, legend1);
-      (0, _internal.append_dev)(fieldset1, t8);
-      (0, _internal.append_dev)(fieldset1, textarea1);
-      (0, _internal.set_input_value)(textarea1,
-      /*internalContent*/
-      ctx[2]);
-      (0, _internal.insert_dev)(target, t9, anchor);
-      (0, _internal.insert_dev)(target, fieldset2, anchor);
-      (0, _internal.append_dev)(fieldset2, legend2);
-      (0, _internal.append_dev)(fieldset2, t11);
-      (0, _internal.append_dev)(fieldset2, textarea2);
-      (0, _internal.set_input_value)(textarea2,
+      (0, _internal.insert_dev)(target, p0, anchor);
+      (0, _internal.append_dev)(p0, input);
+      (0, _internal.insert_dev)(target, t0, anchor);
+      (0, _internal.insert_dev)(target, p1, anchor);
+      (0, _internal.append_dev)(p1, button0);
+      (0, _internal.insert_dev)(target, t2, anchor);
+      if (if_block0) if_block0.m(target, anchor);
+      (0, _internal.insert_dev)(target, t3, anchor);
+      (0, _internal.insert_dev)(target, fieldset, anchor);
+      (0, _internal.append_dev)(fieldset, legend);
+      (0, _internal.append_dev)(fieldset, t5);
+      if (if_block1) if_block1.m(fieldset, null);
+      (0, _internal.append_dev)(fieldset, t6);
+      (0, _internal.append_dev)(fieldset, textarea);
+      (0, _internal.set_input_value)(textarea,
       /*outputContent*/
-      ctx[3]);
-      (0, _internal.insert_dev)(target, t12, anchor);
-      (0, _internal.insert_dev)(target, center1, anchor);
-      (0, _internal.append_dev)(center1, button1);
+      ctx[4]);
+      (0, _internal.insert_dev)(target, t7, anchor);
+      (0, _internal.insert_dev)(target, p2, anchor);
+      (0, _internal.append_dev)(p2, button1);
       if (remount) (0, _internal.run_all)(dispose);
       dispose = [(0, _internal.listen_dev)(input, "change",
       /*input_change_handler*/
-      ctx[8]), (0, _internal.listen_dev)(input, "change",
+      ctx[11]), (0, _internal.listen_dev)(input, "change",
       /*updateContent*/
-      ctx[6], false, false, false), (0, _internal.listen_dev)(textarea0, "input",
-      /*textarea0_input_handler*/
-      ctx[9]), (0, _internal.listen_dev)(button0, "click",
-      /*submit*/
-      ctx[4], false, false, false), (0, _internal.listen_dev)(textarea1, "input",
-      /*textarea1_input_handler*/
-      ctx[10]), (0, _internal.listen_dev)(textarea2, "input",
-      /*textarea2_input_handler*/
-      ctx[11]), (0, _internal.listen_dev)(button1, "click",
+      ctx[8], false, false, false), (0, _internal.listen_dev)(button0, "click",
+      /*toggleInternal*/
+      ctx[9], false, false, false), (0, _internal.listen_dev)(textarea, "input",
+      /*textarea_input_handler*/
+      ctx[14]), (0, _internal.listen_dev)(button1, "click",
       /*download*/
-      ctx[5], false, false, false)];
+      ctx[7], false, false, false)];
     },
     p: function update(ctx, _ref) {
       var _ref2 = _slicedToArray(_ref, 1),
           dirty = _ref2[0];
 
       if (
-      /*files*/
-      ctx[0] &&
-      /*files*/
-      ctx[0][0]) {
-        if (if_block) {
-          if_block.p(ctx, dirty);
+      /*visibleInternals*/
+      ctx[5]) {
+        if (if_block0) {
+          if_block0.p(ctx, dirty);
         } else {
-          if_block = create_if_block(ctx);
-          if_block.c();
-          if_block.m(fieldset0, t3);
+          if_block0 = create_if_block_1(ctx);
+          if_block0.c();
+          if_block0.m(t3.parentNode, t3);
         }
-      } else if (if_block) {
-        if_block.d(1);
-        if_block = null;
+      } else if (if_block0) {
+        if_block0.d(1);
+        if_block0 = null;
       }
 
-      if (dirty &
-      /*inputContent*/
-      2) {
-        (0, _internal.set_input_value)(textarea0,
-        /*inputContent*/
-        ctx[1]);
-      }
-
-      if (dirty &
-      /*internalContent*/
-      4) {
-        (0, _internal.set_input_value)(textarea1,
-        /*internalContent*/
-        ctx[2]);
+      if (
+      /*internal*/
+      ctx[1].title) {
+        if (if_block1) {
+          if_block1.p(ctx, dirty);
+        } else {
+          if_block1 = create_if_block(ctx);
+          if_block1.c();
+          if_block1.m(fieldset, t6);
+        }
+      } else if (if_block1) {
+        if_block1.d(1);
+        if_block1 = null;
       }
 
       if (dirty &
       /*outputContent*/
-      8) {
-        (0, _internal.set_input_value)(textarea2,
+      16) {
+        (0, _internal.set_input_value)(textarea,
         /*outputContent*/
-        ctx[3]);
+        ctx[4]);
       }
     },
     i: _internal.noop,
     o: _internal.noop,
     d: function destroy(detaching) {
-      if (detaching) (0, _internal.detach_dev)(fieldset0);
-      if (if_block) if_block.d();
-      if (detaching) (0, _internal.detach_dev)(t4);
-      if (detaching) (0, _internal.detach_dev)(center0);
-      if (detaching) (0, _internal.detach_dev)(t6);
-      if (detaching) (0, _internal.detach_dev)(fieldset1);
-      if (detaching) (0, _internal.detach_dev)(t9);
-      if (detaching) (0, _internal.detach_dev)(fieldset2);
-      if (detaching) (0, _internal.detach_dev)(t12);
-      if (detaching) (0, _internal.detach_dev)(center1);
+      if (detaching) (0, _internal.detach_dev)(p0);
+      if (detaching) (0, _internal.detach_dev)(t0);
+      if (detaching) (0, _internal.detach_dev)(p1);
+      if (detaching) (0, _internal.detach_dev)(t2);
+      if (if_block0) if_block0.d(detaching);
+      if (detaching) (0, _internal.detach_dev)(t3);
+      if (detaching) (0, _internal.detach_dev)(fieldset);
+      if (if_block1) if_block1.d();
+      if (detaching) (0, _internal.detach_dev)(t7);
+      if (detaching) (0, _internal.detach_dev)(p2);
       (0, _internal.run_all)(dispose);
     }
   };
@@ -19968,18 +20036,20 @@ function decode_document(text) {
 
 function instance($$self, $$props, $$invalidate) {
   var files;
+  var internal = {};
   var inputContent;
   var internalContent;
   var outputContent;
+  var visibleInternals = false;
 
   function encode_document(_ref3) {
     var title = _ref3.title,
         sections = _ref3.sections;
     var results = [];
-    var internal = {
+    $$invalidate(1, internal = {
       title: title,
       sections: sections
-    };
+    });
 
     var _iterator14 = _createForOfIteratorHelper(sections),
         _step14;
@@ -19992,13 +20062,13 @@ function instance($$self, $$props, $$invalidate) {
 
         if (section === "TRUE/FALSE") {
           var decoded = decode_true_false(content);
-          internal[section] = decoded;
+          $$invalidate(1, internal[section] = decoded, internal);
           var encoded = encode_true_false(decoded);
           results.push(encoded);
         } else if (section === "MULTIPLE CHOICE") {
           var _decoded = decode_multiple_choice(content);
 
-          internal[section] = _decoded;
+          $$invalidate(1, internal[section] = _decoded, internal);
 
           var _encoded = encode_multiple_choice(_decoded);
 
@@ -20006,7 +20076,7 @@ function instance($$self, $$props, $$invalidate) {
         } else if (section === "MATCHING") {
           var _decoded2 = decode_matching(content);
 
-          internal[section] = _decoded2;
+          $$invalidate(1, internal[section] = _decoded2, internal);
 
           var _encoded2 = encode_matching(_decoded2);
 
@@ -20021,24 +20091,24 @@ function instance($$self, $$props, $$invalidate) {
       _iterator14.f();
     }
 
-    $$invalidate(2, internalContent = JSON.stringify(internal));
+    $$invalidate(3, internalContent = JSON.stringify(internal));
     return results.join("\n\n");
   }
 
   function submit() {
     try {
       var decoded_document = decode_document(inputContent);
-      $$invalidate(3, outputContent = encode_document(decoded_document));
+      $$invalidate(4, outputContent = encode_document(decoded_document));
     } catch (e) {
       console.error(e);
-      $$invalidate(3, outputContent = "Error while parsing");
+      $$invalidate(4, outputContent = "Error while parsing");
     }
   }
 
   function download() {
     var element = document.createElement("a");
     element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(outputContent));
-    element.setAttribute("download", "output.txt");
+    element.setAttribute("download", internal.title !== undefined ? "".concat(internal.title.replace(/\s+/, "_"), ".txt") : "output.txt");
     element.style.display = "none";
     document.body.appendChild(element);
     element.click();
@@ -20068,25 +20138,39 @@ function instance($$self, $$props, $$invalidate) {
                     while (1) {
                       switch (_context.prev = _context.next) {
                         case 0:
-                          if (err) {
-                            $$invalidate(3, outputContent = "ERROR Reading Document");
-                          } else {
-                            $$invalidate(1, inputContent = doc.content.map(function (_ref5) {
-                              var content = _ref5.content;
-                              return content.map(function (_ref6) {
-                                var value = _ref6.value;
-                                return value.trim();
-                              }).join("\t").trim();
-                            }).join("\n"));
-                            submit();
+                          _context.prev = 0;
+
+                          if (!err) {
+                            _context.next = 3;
+                            break;
                           }
 
-                        case 1:
+                          throw err;
+
+                        case 3:
+                          $$invalidate(2, inputContent = doc.content.map(function (_ref5) {
+                            var content = _ref5.content;
+                            return content.map(function (_ref6) {
+                              var value = _ref6.value;
+                              return value.trim();
+                            }).join("\t").trim();
+                          }).join("\n"));
+                          submit();
+                          _context.next = 11;
+                          break;
+
+                        case 7:
+                          _context.prev = 7;
+                          _context.t0 = _context["catch"](0);
+                          console.error(_context.t0);
+                          $$invalidate(4, outputContent = "ERROR Reading Document. Is it .rtf?");
+
+                        case 11:
                         case "end":
                           return _context.stop();
                       }
                     }
-                  }, _callee);
+                  }, _callee, null, [[0, 7]]);
                 }));
 
                 return function (_x, _x2) {
@@ -20106,6 +20190,10 @@ function instance($$self, $$props, $$invalidate) {
     return _updateContent.apply(this, arguments);
   }
 
+  function toggleInternal() {
+    $$invalidate(5, visibleInternals = !visibleInternals);
+  }
+
   var writable_props = [];
   Object.keys($$props).forEach(function (key) {
     if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn("<App> was created with unknown prop '".concat(key, "'"));
@@ -20122,26 +20210,28 @@ function instance($$self, $$props, $$invalidate) {
 
   function textarea0_input_handler() {
     inputContent = this.value;
-    $$invalidate(1, inputContent);
+    $$invalidate(2, inputContent);
   }
 
   function textarea1_input_handler() {
     internalContent = this.value;
-    $$invalidate(2, internalContent);
+    $$invalidate(3, internalContent);
   }
 
-  function textarea2_input_handler() {
+  function textarea_input_handler() {
     outputContent = this.value;
-    $$invalidate(3, outputContent);
+    $$invalidate(4, outputContent);
   }
 
   $$self.$capture_state = function () {
     return {
       parseRTF: _rtfParser.default,
       files: files,
+      internal: internal,
       inputContent: inputContent,
       internalContent: internalContent,
       outputContent: outputContent,
+      visibleInternals: visibleInternals,
       match_all: match_all,
       decode_true_false: decode_true_false,
       encode_true_false: encode_true_false,
@@ -20153,22 +20243,25 @@ function instance($$self, $$props, $$invalidate) {
       encode_document: encode_document,
       submit: submit,
       download: download,
-      updateContent: updateContent
+      updateContent: updateContent,
+      toggleInternal: toggleInternal
     };
   };
 
   $$self.$inject_state = function ($$props) {
     if ("files" in $$props) $$invalidate(0, files = $$props.files);
-    if ("inputContent" in $$props) $$invalidate(1, inputContent = $$props.inputContent);
-    if ("internalContent" in $$props) $$invalidate(2, internalContent = $$props.internalContent);
-    if ("outputContent" in $$props) $$invalidate(3, outputContent = $$props.outputContent);
+    if ("internal" in $$props) $$invalidate(1, internal = $$props.internal);
+    if ("inputContent" in $$props) $$invalidate(2, inputContent = $$props.inputContent);
+    if ("internalContent" in $$props) $$invalidate(3, internalContent = $$props.internalContent);
+    if ("outputContent" in $$props) $$invalidate(4, outputContent = $$props.outputContent);
+    if ("visibleInternals" in $$props) $$invalidate(5, visibleInternals = $$props.visibleInternals);
   };
 
   if ($$props && "$$inject" in $$props) {
     $$self.$inject_state($$props.$$inject);
   }
 
-  return [files, inputContent, internalContent, outputContent, submit, download, updateContent, encode_document, input_change_handler, textarea0_input_handler, textarea1_input_handler, textarea2_input_handler];
+  return [files, internal, inputContent, internalContent, outputContent, visibleInternals, submit, download, updateContent, toggleInternal, encode_document, input_change_handler, textarea0_input_handler, textarea1_input_handler, textarea_input_handler];
 }
 
 var App = /*#__PURE__*/function (_SvelteComponentDev) {
@@ -20492,7 +20585,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39161" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45113" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
