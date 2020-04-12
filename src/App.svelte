@@ -1,5 +1,9 @@
 <script>
+import blobToStream from 'blob-to-stream'
 import parseRTF from 'rtf-parser'
+import iconv from 'iconv-lite'
+import encodings from 'iconv-lite/encodings'
+iconv.encodings = {...encodings, symbol: 'windows1254'}
 
 let files
 let internal = {}
@@ -222,16 +226,21 @@ function download() {
 }
 
 async function updateContent() {
-  parseRTF.string(await files[0].text(), async (err, doc) => {
-    try {
-      if (err) { throw err }
-      inputContent = doc.content.map(({ content }) => content.map(({ value }) => value.trim()).join('\t').trim()).join('\n')
-      submit()
-    } catch (e) {
-      console.error(e)
-      outputContent = 'ERROR Reading Document. Is it .rtf?'
-    }
-  })
+  try {
+    parseRTF.stream(blobToStream(files[0]), async (err, doc) => {
+      try {
+        if (err) { throw err }
+        inputContent = doc.content.map(({ content }) => content.map(({ value }) => value.trim()).join('\t').trim()).join('\n')
+        submit()
+      } catch (e) {
+        console.error(e)
+        outputContent = 'ERROR Parsing Document. Is it .rtf?'
+      }
+    })
+  } catch (e) {
+    console.error(e)
+    outputContent = 'ERROR Reading Document.'
+  }
 }
 
 function toggleInternal() {
